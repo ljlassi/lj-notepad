@@ -8,9 +8,10 @@
 
 class DatabaseConnection {
 private:
-  int m_rc;
-  char *m_zErrMsg;
-  sqlite3 *m_db;
+    int m_rc;
+    char *m_zErrMsg;
+    sqlite3 *m_db;
+    void errorCheck(bool bind_operation = false);
 
 public:
   void connectToDB();

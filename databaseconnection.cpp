@@ -12,7 +12,7 @@
     }
 
     void DatabaseConnection::closeDBConnection() {
-      m_rc = sqlite3_close(m_db);
+      sqlite3_close(m_db);
       std::cout << "Closed database connection" << std::endl;
     }
 
@@ -26,22 +26,12 @@
 
     void DatabaseConnection::runSQL(const std::string& sql) {
       m_rc = sqlite3_exec(m_db, sql.c_str(), &DatabaseConnection::callBack, 0, &m_zErrMsg);
-      if (m_rc) {
-        std::cout << "Failed to do the operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
-      }
-      else {
-        std::cout << "Operation successful." << std::endl;
-      }
+      errorCheck();
     }
 
     void DatabaseConnection::selectQuery(const std::string& sql) {
       m_rc = sqlite3_exec(m_db, sql.c_str(), &DatabaseConnection::callBack, 0, &m_zErrMsg);
-      if (m_rc) {
-        std::cout << "Failed to do the operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
-      }
-      else {
-        std::cout << "Operation successful." << std::endl;
-      }
+      errorCheck();
     }
 
 
@@ -50,25 +40,29 @@
         sqlite3_stmt *stmt;
         sqlite3_prepare(m_db, sql_stmt, -1, &stmt, 0);
         m_rc = sqlite3_bind_text(stmt, 1, title, strlen(title), SQLITE_STATIC);
-        if (m_rc) {
-          std::cout << "Failed to do the bind operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
+        errorCheck(true);
+        m_rc = sqlite3_bind_text(stmt, 2, content, strlen(content), SQLITE_STATIC);
+        errorCheck(true);
+        sqlite3_step(stmt);
+        m_rc = sqlite3_reset(stmt);
+        errorCheck();
+    }
+
+    void DatabaseConnection::errorCheck(bool bind_operation) {
+        if (bind_operation == true) {
+            if (m_rc) {
+              std::cout << "Failed to do the bind operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
+            }
+            else {
+              std::cout << "Operation successful." << std::endl;
+            }
         }
         else {
-          std::cout << "Operation successful." << std::endl;
+            if (m_rc) {
+              std::cout << "Failed to do the operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
+            }
+            else {
+              std::cout << "Operation successful." << std::endl;
+            }
         }
-        m_rc = sqlite3_bind_text(stmt, 2, content, strlen(content), SQLITE_STATIC);
-      if (m_rc) {
-        std::cout << "Failed to do the bind operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
-      }
-      else {
-        std::cout << "Operation successful." << std::endl;
-      }
-      sqlite3_step(stmt);
-      m_rc = sqlite3_reset(stmt);
-      if (m_rc) {
-        std::cout << "Failed to do the operation. Error message: " << sqlite3_errmsg(m_db) << std::endl;
-      }
-      else {
-        std::cout << "Operation successful." << std::endl;
-      }
     }
