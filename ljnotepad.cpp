@@ -1,6 +1,7 @@
 #include "ljnotepad.h"
 #include "ui_ljnotepad.h"
 #include <QTextStream>
+#include <sqlite3.h>
 #include "databaseconnection.h"
 
 LJNotepad::LJNotepad(QWidget *parent)
@@ -13,15 +14,20 @@ LJNotepad::LJNotepad(QWidget *parent)
 
 LJNotepad::~LJNotepad()
 {
+    m_dbconnection.closeDBConnection();
     delete ui;
 }
 
 void LJNotepad::on_pushButton_clicked()
 {
-    QString searchString = ui->lineEdit->text();
-    ui->textEdit->find(searchString, QTextDocument::FindWholeWords);
-    std::string sql = "INSERT INTO NOTES VALUES ('THIS IS A TITLE', 'THIS IS TEXT')";
-    m_dbconnection.runSQL(sql);
+    QString title = ui->lineEdit->text();
+    QString content = ui->textEdit->toPlainText();
+    const char* title_query;
+    const char* content_query;
+    title_query = title.toStdString().c_str();
+    content_query = content.toStdString().c_str();
+    const char* sql_stmt = "INSERT INTO NOTES VALUES (?, ?)";
+    m_dbconnection.saveNote(sql_stmt, title_query, content_query);
 }
 
 void LJNotepad::loadDatabase() {
