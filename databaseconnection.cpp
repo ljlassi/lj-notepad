@@ -7,6 +7,8 @@
      *
      */
 
+    QString DatabaseConnection::m_displayable_result = "Previous Notes: \n";
+
     void DatabaseConnection::connectToDB() {
       m_rc = sqlite3_open(DB_NAME, &m_db);
       if (m_rc) {
@@ -39,6 +41,7 @@
 
     int DatabaseConnection::callBack(void *NotUsed, int argc, char **argv, char **azColName) {
       for (int i = 0; i < argc; i++) {
+        DatabaseConnection::m_displayable_result = DatabaseConnection::m_displayable_result + azColName[i] + ": " + argv[i] + "\n";
         std::cout << azColName[i] << ": " << argv[i] << std::endl;
       }
       return 0;

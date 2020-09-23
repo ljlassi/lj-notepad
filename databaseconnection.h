@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sqlite3.h>
+#include <QString>
 #define DB_NAME "ljnotepad.db"
 
 class DatabaseConnection {
@@ -14,6 +15,7 @@ private:
     void errorCheck(bool bind_operation = false);
 
 public:
+  static QString m_displayable_result;
   void connectToDB();
   void closeDBConnection();
   static int callBack(void*, int, char**, char**);

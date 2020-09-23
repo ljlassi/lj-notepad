@@ -18,14 +18,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     databaseconnection.cpp \
     main.cpp \
-    ljnotepad.cpp
+    ljnotepad.cpp \
+    readnotes.cpp
 
 HEADERS += \
     databaseconnection.h \
-    ljnotepad.h
+    ljnotepad.h \
+    readnotes.h
 
 FORMS += \
-    ljnotepad.ui
+    ljnotepad.ui \
+    readnotes.ui
 
 TRANSLATIONS += \
     LJNotepad_en_US.ts

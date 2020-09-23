@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "databaseconnection.h"
+#include "readnotes.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LJNotepad; }
@@ -18,13 +19,14 @@ public:
 
 private slots:
     void on_saveNoteButton_pressed();
+    void on_saveNoteButton_clicked();
+    void on_actionRead_Notes_triggered();
 
 private:
-
+    ReadNotes *m_readnotes;
     DatabaseConnection m_dbconnection;
 
     Ui::LJNotepad *ui;
-    void on_saveNoteButton_clicked();
     void loadDatabase();
 };
 #endif // LJNOTEPAD_H

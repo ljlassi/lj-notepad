@@ -15,6 +15,7 @@ LJNotepad::LJNotepad(QWidget *parent)
     , ui(new Ui::LJNotepad)
 {
     ui->setupUi(this);
+    m_readnotes = new ReadNotes();
     loadDatabase(); // Create database if it doens't exist, otherwise open the connection.
 }
 
@@ -64,4 +65,11 @@ void LJNotepad::loadDatabase() {
 void LJNotepad::on_saveNoteButton_pressed()
 {
     LJNotepad::on_saveNoteButton_clicked();
+}
+
+void LJNotepad::on_actionRead_Notes_triggered()
+{
+    std::cout << "Clicked menu." << std::endl;
+    m_readnotes->show();
+    m_readnotes->loadNotes();
 }
