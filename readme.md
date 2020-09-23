@@ -1,0 +1,3 @@
+Learning project using C++, QT Creator and SQLite3.
+
+Work in progress...
