@@ -1,6 +1,12 @@
 #include "databaseconnection.h"
 #include <string.h>
 
+    /**
+     * @brief DatabaseConnection::connectToDB
+     * Connect to SQLite3 database.
+     *
+     */
+
     void DatabaseConnection::connectToDB() {
       m_rc = sqlite3_open(DB_NAME, &m_db);
       if (m_rc) {
@@ -11,10 +17,25 @@
       }
     }
 
+    /**
+     * @brief DatabaseConnection::closeDBConnection
+     * Close SQLite3 database connection.
+     */
+
     void DatabaseConnection::closeDBConnection() {
       sqlite3_close(m_db);
       std::cout << "Closed database connection" << std::endl;
     }
+
+    /**
+     * @brief DatabaseConnection::callBack
+     * Acts as a callback function for SQLite3 C++ interface SQL queries.
+     * @param NotUsed
+     * @param argc
+     * @param argv
+     * @param azColName
+     * @return
+     */
 
     int DatabaseConnection::callBack(void *NotUsed, int argc, char **argv, char **azColName) {
       for (int i = 0; i < argc; i++) {
@@ -23,11 +44,22 @@
       return 0;
     }
 
+    /**
+     * @brief DatabaseConnection::runSQL
+     * Run a generic SQL query. Used for e.g. table creation.
+     * @param sql
+     */
 
     void DatabaseConnection::runSQL(const std::string& sql) {
       m_rc = sqlite3_exec(m_db, sql.c_str(), &DatabaseConnection::callBack, 0, &m_zErrMsg);
       errorCheck();
     }
+
+    /**
+     * @brief DatabaseConnection::selectQuery
+     * Run a SELECT query. To be expanded.
+     * @param sql
+     */
 
     void DatabaseConnection::selectQuery(const std::string& sql) {
       m_rc = sqlite3_exec(m_db, sql.c_str(), &DatabaseConnection::callBack, 0, &m_zErrMsg);
@@ -35,6 +67,13 @@
     }
 
 
+    /**
+     * @brief DatabaseConnection::saveNote
+     * Save a LJNotepad note to the database.
+     * @param sql_stmt
+     * @param title
+     * @param content
+     */
 
     void DatabaseConnection::saveNote(const char* sql_stmt, const char* title, const char* content) {
         sqlite3_stmt *stmt;
@@ -47,6 +86,13 @@
         m_rc = sqlite3_reset(stmt);
         errorCheck();
     }
+
+    /**
+     * @brief DatabaseConnection::errorCheck
+     * Check for errors, this is called after a sqlite3 operation that returns the value to m_rc class member variable.
+     * Set true as the argument if this is a bind operation, for customized error and success messages.
+     * @param bind_operation
+     */
 
     void DatabaseConnection::errorCheck(bool bind_operation) {
         if (bind_operation == true) {

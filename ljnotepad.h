@@ -17,14 +17,14 @@ public:
     ~LJNotepad();
 
 private slots:
-    void on_pushButton_pressed();
+    void on_saveNoteButton_pressed();
 
 private:
 
     DatabaseConnection m_dbconnection;
 
     Ui::LJNotepad *ui;
-    void on_pushButton_clicked();
+    void on_saveNoteButton_clicked();
     void loadDatabase();
 };
 #endif // LJNOTEPAD_H

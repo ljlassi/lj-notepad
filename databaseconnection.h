@@ -8,9 +8,9 @@
 
 class DatabaseConnection {
 private:
-    int m_rc;
-    char *m_zErrMsg;
-    sqlite3 *m_db;
+    int m_rc; // Stores SQLite3 error status
+    char *m_zErrMsg; // Stores the error message.
+    sqlite3 *m_db; // SQLite3 database connection object
     void errorCheck(bool bind_operation = false);
 
 public:
