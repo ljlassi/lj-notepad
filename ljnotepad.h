@@ -19,7 +19,6 @@ public:
 
 private slots:
     void on_saveNoteButton_pressed();
-    void on_saveNoteButton_clicked();
     void on_actionRead_Notes_triggered();
 
 private:
