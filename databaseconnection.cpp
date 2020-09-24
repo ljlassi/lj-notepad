@@ -42,7 +42,6 @@
     int DatabaseConnection::callBack(void *NotUsed, int argc, char **argv, char **azColName) {
       for (int i = 0; i < argc; i++) {
         DatabaseConnection::m_displayable_result = DatabaseConnection::m_displayable_result + azColName[i] + ": " + argv[i] + "\n";
-        std::cout << azColName[i] << ": " << argv[i] << std::endl;
       }
       return 0;
     }
@@ -81,9 +80,9 @@
     void DatabaseConnection::saveNote(const char* sql_stmt, const char* title, const char* content) {
         sqlite3_stmt *stmt;
         sqlite3_prepare(m_db, sql_stmt, -1, &stmt, 0);
-        m_rc = sqlite3_bind_text(stmt, 1, title, strlen(title), SQLITE_STATIC);
+        m_rc = sqlite3_bind_text(stmt, 1, title, strlen(title), SQLITE_TRANSIENT);
         errorCheck(true);
-        m_rc = sqlite3_bind_text(stmt, 2, content, strlen(content), SQLITE_STATIC);
+        m_rc = sqlite3_bind_text(stmt, 2, content, strlen(content), SQLITE_TRANSIENT);
         errorCheck(true);
         sqlite3_step(stmt);
         m_rc = sqlite3_reset(stmt);

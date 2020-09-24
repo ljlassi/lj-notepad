@@ -15,11 +15,9 @@ class ReadNotes : public QWidget
 public:
     explicit ReadNotes(QWidget *parent = nullptr);
     ~ReadNotes();
-    void loadNotes();
+    void loadNotes(DatabaseConnection dbconnection);
 
 private:
-
-    DatabaseConnection m_dbconnection;
 
     Ui::ReadNotes *ui;
 };

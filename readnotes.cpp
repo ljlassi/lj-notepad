@@ -13,8 +13,7 @@ ReadNotes::~ReadNotes()
     delete ui;
 }
 
-void ReadNotes::loadNotes() {
-    m_dbconnection.connectToDB();
-    m_dbconnection.selectQuery("SELECT * FROM NOTES");
-    ui->textBrowser->setText(m_dbconnection.m_displayable_result);
+void ReadNotes::loadNotes(DatabaseConnection dbconnection) {
+    dbconnection.selectQuery("SELECT * FROM NOTES");
+    ui->textBrowser->setText(dbconnection.m_displayable_result);
 }
